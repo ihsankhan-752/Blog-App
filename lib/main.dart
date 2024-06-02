@@ -1,3 +1,4 @@
+import 'package:blog_app/controllers/loading_controller.dart';
 import 'package:blog_app/screens/splash/splash_screen.dart';
 import 'package:blog_app/theme/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,12 +35,17 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       designSize: Size(373, 650),
       builder: (context, child) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: Provider.of<ThemeProvider>(context).themeData,
-          home: MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.2)),
-            child: const SplashScreen(),
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => LoadingController()),
+          ],
+          child: GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: Provider.of<ThemeProvider>(context).themeData,
+            home: MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.2)),
+              child: const SplashScreen(),
+            ),
           ),
         );
       },

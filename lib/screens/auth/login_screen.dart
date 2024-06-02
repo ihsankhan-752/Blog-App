@@ -1,11 +1,12 @@
 import 'package:blog_app/constants/app_text_style.dart';
+import 'package:blog_app/controllers/loading_controller.dart';
 import 'package:blog_app/screens/auth/sign_up_screen.dart';
-import 'package:blog_app/screens/home/bottom_appbar.dart';
+import 'package:blog_app/services/auth_services.dart';
 import 'package:blog_app/widgets/app_logo.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/app_colors.dart';
 import '../../widgets/buttons.dart';
@@ -23,48 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
 
   final _passwordController = TextEditingController();
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  Future<void> _login(BuildContext context) async {
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-      // If login successful, navigate to home screen or any other destination.
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CustomBottomAppBar()),
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        // Handle case when user is not found with given email
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('No user found for that email.'),
-          ),
-        );
-      } else if (e.code == 'wrong-password') {
-        // Handle case when incorrect password is provided
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Wrong password provided for that user.'),
-          ),
-        );
-      } else {
-        // Handle other errors
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: ${e.message}'),
-          ),
-        );
-      }
-    } catch (e) {
-      // Handle other errors
-      print(e.toString());
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,10 +68,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              PrimaryButton(
-                onTap: () => _login(context),
-                buttonTitle: "Login",
-              ),
+              Consumer<LoadingController>(builder: (context, loadingController, child) {
+                return loadingController.isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(color: AppColors.primaryColor),
+                      )
+                    : PrimaryButton(
+                        onTap: () {
+                          AuthServices()
+                              .login(context: context, email: _emailController.text, password: _passwordController.text);
+                          setState(() {
+                            _emailController.clear();
+                            _passwordController.clear();
+                          });
+                        },
+                        buttonTitle: "Login",
+                      );
+              }),
               SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
