@@ -1,12 +1,15 @@
 import 'package:blog_app/constants/app_colors.dart';
 import 'package:blog_app/constants/app_text_style.dart';
 import 'package:blog_app/constants/lists.dart';
+import 'package:blog_app/controllers/loading_controller.dart';
 import 'package:blog_app/screens/custom_navbar/custom_navbar.dart';
+import 'package:blog_app/services/blog_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../../widgets/buttons.dart';
 import '../../../widgets/text_inputs.dart';
@@ -48,9 +51,7 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: 10.h,
-            ),
+            SizedBox(height: 10.h),
             GestureDetector(
               onTap: () {},
               child: DottedBorder(
@@ -119,42 +120,37 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
                       itemHeight: 60,
                     ),
                   ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
+                  SizedBox(height: 10.h),
                   CustomTextField(
                     controller: _titleController,
                     iconData: Icons.mode,
                     hintTitle: "Add Title",
                     color: Theme.of(context).colorScheme.secondary,
                   ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
+                  SizedBox(height: 10.h),
                   CustomTextField(
                     controller: _descriptionController,
                     color: Theme.of(context).colorScheme.secondary,
                     iconData: Icons.mode_rounded,
                     hintTitle: "Add Descriptions",
                   ),
-                  SizedBox(
-                    height: 180.h,
-                  ),
-                  PrimaryButton(
-                      onTap: () async {
-                        try {
-                          await FirebaseFirestore.instance.collection("blogs").add({
-                            "uid": FirebaseAuth.instance.currentUser!.uid,
-                            'title': _titleController.text,
-                            'description': _descriptionController.text,
-                            'category': _selectedItem
-                          });
-                        } catch (e) {
-                          print(e);
-                        }
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => CustomNavBar()));
-                      },
-                      buttonTitle: "Upload"),
+                  SizedBox(height: 40),
+                  Consumer<LoadingController>(builder: (context, loadingController, child) {
+                    return loadingController.isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(color: AppColors.primaryColor),
+                          )
+                        : PrimaryButton(
+                            onTap: () {
+                              BlogServices().addNewBlog(
+                                context: context,
+                                category: _selectedItem!,
+                                title: _titleController.text,
+                                description: _descriptionController.text,
+                              );
+                            },
+                            buttonTitle: "Upload");
+                  }),
                 ],
               ),
             ),
