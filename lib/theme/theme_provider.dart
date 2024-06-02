@@ -26,19 +26,9 @@ class ThemeProvider with ChangeNotifier {
 
   void toggleTheme(ThemeData newTheme) {
     _themeData = newTheme;
-    saveThemePreference(); // Save the theme preference
+    saveThemePreference();
     notifyListeners();
   }
-
-  // void toggleTheme() {
-  //   if (_themeData == lightTheme) {
-  //     _themeData = darkTheme;
-  //   } else {
-  //     _themeData = lightTheme;
-  //   }
-  //   saveThemePreference();
-  //   notifyListeners();
-  // }
 
   Future<void> saveThemePreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -1,3 +1,9 @@
+import '../screens/custom_navbar/add_blog/add_blog_screen.dart';
+import '../screens/custom_navbar/favourite/favorites_screen.dart';
+import '../screens/custom_navbar/home/home_screen.dart';
+import '../screens/custom_navbar/notification/notification_screen.dart';
+import '../screens/custom_navbar/settings/profile_screen.dart';
+
 List<String> blogTitle = [
   "How to choose the right colors",
   "My methods of mixing paints",
@@ -62,4 +68,11 @@ final List<String> communityNames = [
   "Retro Gaming Clan",
   "Sustainable Living Coalition",
   "Adventure Seekers Network"
+];
+List screens = [
+  HomeScreen(),
+  FavoriteScreen(),
+  AddBlogScreen(),
+  NotificationScreen(),
+  ProfileScreen(),
 ];

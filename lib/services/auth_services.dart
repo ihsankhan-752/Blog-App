@@ -1,7 +1,7 @@
 import 'package:blog_app/controllers/loading_controller.dart';
 import 'package:blog_app/models/user_model.dart';
 import 'package:blog_app/screens/auth/login_screen.dart';
-import 'package:blog_app/screens/home/home.dart';
+import 'package:blog_app/screens/custom_navbar/home/home_screen.dart';
 import 'package:blog_app/widgets/custom_msg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,7 +38,7 @@ class AuthServices {
 
         await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set(userModel.toMap());
         Provider.of<LoadingController>(context, listen: false).setLoading(false);
-        Get.to(() => Home());
+        Get.offAll(() => HomeScreen());
       } on FirebaseException catch (e) {
         Provider.of<LoadingController>(context, listen: false).setLoading(false);
         showCustomMsg(context, e.message!);
@@ -57,7 +57,7 @@ class AuthServices {
         await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
         Provider.of<LoadingController>(context, listen: false).setLoading(false);
 
-        Get.to(() => Home());
+        Get.offAll(() => HomeScreen());
       } on FirebaseException catch (e) {
         Provider.of<LoadingController>(context, listen: false).setLoading(false);
         showCustomMsg(context, e.message!);

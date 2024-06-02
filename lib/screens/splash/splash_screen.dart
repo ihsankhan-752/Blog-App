@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:blog_app/screens/auth/login_screen.dart';
-import 'package:blog_app/screens/home/home.dart';
+import 'package:blog_app/screens/custom_navbar/custom_navbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,9 +19,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Timer(Duration(seconds: 3), () {
       if (FirebaseAuth.instance.currentUser != null) {
-        Get.to(() => Home());
+        Get.offAll(() => CustomNavBar());
       } else {
-        Get.to(() => LoginScreen());
+        Get.offAll(() => LoginScreen());
       }
     });
     super.initState();

@@ -1,7 +1,7 @@
 import 'package:blog_app/constants/app_colors.dart';
 import 'package:blog_app/constants/app_text_style.dart';
 import 'package:blog_app/constants/lists.dart';
-import 'package:blog_app/screens/home/home_details.dart';
+import 'package:blog_app/screens/custom_navbar/home/blog_details_screen.dart';
 import 'package:blog_app/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -30,9 +30,8 @@ class _HomeScreenCardState extends State<HomeScreenCard> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (BuildContext context) {
-                    return HomeDetails(
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                    return BlogDetailScreen(
                       title: blogTitle[index],
                       image: blogImages[index],
                       des: blogDis[index],
@@ -47,9 +46,7 @@ class _HomeScreenCardState extends State<HomeScreenCard> {
                       height: 120,
                       width: 120,
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage(blogImages[index])),
+                        image: DecorationImage(fit: BoxFit.fill, image: AssetImage(blogImages[index])),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
@@ -79,9 +76,7 @@ class _HomeScreenCardState extends State<HomeScreenCard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primaryLightGrey),
-                        shape: BoxShape.circle),
+                    decoration: BoxDecoration(border: Border.all(color: AppColors.primaryLightGrey), shape: BoxShape.circle),
                     child: CircleAvatar(
                       backgroundImage: AssetImage(
                         "assets/profile.jpg",
@@ -89,19 +84,14 @@ class _HomeScreenCardState extends State<HomeScreenCard> {
                       radius: 20,
                     ),
                   ),
-                  CustomTextButton(
-                      onclick: () {},
-                      textButtonText: blogPublishBy[index],
-                      fontSize: 18),
+                  CustomTextButton(onclick: () {}, textButtonText: blogPublishBy[index], fontSize: 18),
                   SmallText(
                     text: blogPublished[index],
                   ),
                   Spacer(),
                   IconButton(
                     icon: Icon(
-                      isLovedList[index]
-                          ? Icons.favorite
-                          : Icons.favorite_border,
+                      isLovedList[index] ? Icons.favorite : Icons.favorite_border,
                       color: isLovedList[index] ? Colors.red : null,
                     ),
                     onPressed: () {

@@ -2,13 +2,11 @@ import 'package:blog_app/constants/app_colors.dart';
 import 'package:blog_app/constants/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-class HomeDetails extends StatelessWidget {
+class BlogDetailScreen extends StatelessWidget {
   final String title;
   final String image;
   final String des;
-  HomeDetails(
-      {Key? key, required this.image, required this.title, required this.des})
-      : super(key: key);
+  BlogDetailScreen({Key? key, required this.image, required this.title, required this.des}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

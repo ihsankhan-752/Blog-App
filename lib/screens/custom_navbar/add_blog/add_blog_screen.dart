@@ -1,24 +1,24 @@
 import 'package:blog_app/constants/app_colors.dart';
 import 'package:blog_app/constants/app_text_style.dart';
 import 'package:blog_app/constants/lists.dart';
-import 'package:blog_app/screens/home/bottom_appbar.dart';
+import 'package:blog_app/screens/custom_navbar/custom_navbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../widgets/buttons.dart';
-import '../../widgets/text_inputs.dart';
+import '../../../widgets/buttons.dart';
+import '../../../widgets/text_inputs.dart';
 
-class AddNewBlog extends StatefulWidget {
-  AddNewBlog({Key? key}) : super(key: key);
+class AddBlogScreen extends StatefulWidget {
+  AddBlogScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddNewBlog> createState() => _AddNewBlogState();
+  State<AddBlogScreen> createState() => _AddBlogScreenState();
 }
 
-class _AddNewBlogState extends State<AddNewBlog> {
+class _AddBlogScreenState extends State<AddBlogScreen> {
   String? _selectedItem;
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -152,7 +152,7 @@ class _AddNewBlogState extends State<AddNewBlog> {
                         } catch (e) {
                           print(e);
                         }
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => CustomBottomAppBar()));
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => CustomNavBar()));
                       },
                       buttonTitle: "Upload"),
                 ],
