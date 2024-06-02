@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:blog_app/constants/app_text_style.dart';
 import 'package:blog_app/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,10 +15,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Timer(Duration(seconds: 3), () {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) {
-        return LoginScreen();
-      }));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return LoginScreen();
+          },
+        ),
+      );
     });
     super.initState();
   }
@@ -31,20 +34,14 @@ class _SplashScreenState extends State<SplashScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Padding(
-              padding: const EdgeInsets.all(40.0),
+            child: SizedBox(
+              height: 100.h,
               child: Image.asset(
                 "assets/logo.png",
                 fit: BoxFit.fill,
               ),
             ),
           ),
-          SizedBox(
-            height: 50.h,
-          ),
-          TitleText(
-              text: "Powered by IKTEKSOL",
-              color: Theme.of(context).colorScheme.primary)
         ],
       ),
     );
