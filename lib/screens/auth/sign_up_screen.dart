@@ -1,12 +1,13 @@
 import 'package:blog_app/constants/app_text_style.dart';
 import 'package:blog_app/screens/auth/login_screen.dart';
 import 'package:blog_app/widgets/app_logo.dart';
-import 'package:blog_app/widgets/custom_button.dart';
-import 'package:blog_app/widgets/custom_textfields.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../widgets/buttons.dart';
+import '../../widgets/text_inputs.dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({Key? key}) : super(key: key);
@@ -31,10 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future addUsersDetails(String username, String email) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(auth.currentUser!.uid)
-        .set({
+    await FirebaseFirestore.instance.collection('users').doc(auth.currentUser!.uid).set({
       'user name': username,
       'email': email,
       'uid': auth.currentUser!.uid,
@@ -45,8 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
-          padding: EdgeInsets.fromLTRB(
-              15.w, MediaQuery.of(context).padding.top, 15.w, 15.h),
+          padding: EdgeInsets.fromLTRB(15.w, MediaQuery.of(context).padding.top, 15.w, 15.h),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -57,12 +54,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                TitleText(
-                    text: "Lets Get Started",
-                    color: Theme.of(context).colorScheme.primary),
-                TitleText(
-                    text: "Sign Up",
-                    color: Theme.of(context).colorScheme.primary),
+                TitleText(text: "Lets Get Started", color: Theme.of(context).colorScheme.primary),
+                TitleText(text: "Sign Up", color: Theme.of(context).colorScheme.primary),
                 SizedBox(
                   height: 25.h,
                 ),
@@ -90,16 +83,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   height: 20.h,
                 ),
-                CustomButton(
-                  ontap: () async {
+                PrimaryButton(
+                  onTap: () async {
                     try {
                       FirebaseAuth auth = FirebaseAuth.instance;
-                      await auth.createUserWithEmailAndPassword(
-                          email: _emailController.text,
-                          password: _passwordController.text);
+                      await auth.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
 
-                      await addUsersDetails(_usernameController.text.trim(),
-                          _emailController.text.trim());
+                      await addUsersDetails(_usernameController.text.trim(), _emailController.text.trim());
                       // await FirebaseFirestore.instance
                       //     .collection("users")
                       //     .doc(auth.currentUser!.uid)
@@ -110,18 +100,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       // });
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content:
-                              Text('Sign Up Successfully. Now you can login'),
+                          content: Text('Sign Up Successfully. Now you can login'),
                         ),
                       );
                     } catch (e) {
                       print(e.toString());
                     }
 
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                   },
-                  buttontitle: "Next",
+                  buttonTitle: "Next",
                   width: double.infinity,
                 ),
                 Row(
@@ -132,10 +120,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                       },
                       child: Text(
                         'Login',

@@ -1,8 +1,9 @@
 import 'package:blog_app/constants/app_colors.dart';
 import 'package:blog_app/constants/app_text_style.dart';
-import 'package:blog_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../widgets/buttons.dart';
 
 class InviteScreen extends StatelessWidget {
   const InviteScreen({Key? key}) : super(key: key);
@@ -29,12 +30,11 @@ class InviteScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SubTitleText(
-                text: "Invite your Friends", color: AppColors.primaryBlack),
+            SubTitleText(text: "Invite your Friends", color: AppColors.primaryBlack),
             SizedBox(
               height: 20.h,
             ),
-            CustomButton(ontap: () {}, buttontitle: "Invite"),
+            PrimaryButton(onTap: () {}, buttonTitle: "Invite"),
           ],
         ),
       ),
@@ -64,8 +64,7 @@ class CustomIcons extends StatelessWidget {
           Container(
             height: 60,
             width: 60,
-            decoration: BoxDecoration(
-                color: Colors.grey.shade300, shape: BoxShape.circle),
+            decoration: BoxDecoration(color: Colors.grey.shade300, shape: BoxShape.circle),
             child: Center(
               child: IconButton(onPressed: ontap, icon: Icon(iconData)),
             ),

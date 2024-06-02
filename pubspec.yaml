@@ -42,7 +42,7 @@ dependencies:
   cloud_firestore: any
   image_picker: any
   firebase_storage: any
-  provider: any
+  provider: ^6.1.2
   shared_preferences: any
   get: ^4.6.6
 #  cloud_firestore: any

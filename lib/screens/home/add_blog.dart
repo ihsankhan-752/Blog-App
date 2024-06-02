@@ -2,13 +2,14 @@ import 'package:blog_app/constants/app_colors.dart';
 import 'package:blog_app/constants/app_text_style.dart';
 import 'package:blog_app/constants/lists.dart';
 import 'package:blog_app/screens/home/bottom_appbar.dart';
-import 'package:blog_app/widgets/custom_button.dart';
-import 'package:blog_app/widgets/custom_textfields.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../widgets/buttons.dart';
+import '../../widgets/text_inputs.dart';
 
 class AddNewBlog extends StatefulWidget {
   AddNewBlog({Key? key}) : super(key: key);
@@ -42,8 +43,7 @@ class _AddNewBlogState extends State<AddNewBlog> {
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
-        title: TitleText(
-            text: "Add new Blog", color: Theme.of(context).colorScheme.primary),
+        title: TitleText(text: "Add new Blog", color: Theme.of(context).colorScheme.primary),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -94,9 +94,7 @@ class _AddNewBlogState extends State<AddNewBlog> {
                       horizontal: 10.h,
                     ),
                     decoration: BoxDecoration(
-                        border: Border.all(
-                            color: AppColors.primaryLightGrey, width: 1),
-                        borderRadius: BorderRadius.circular(15)),
+                        border: Border.all(color: AppColors.primaryLightGrey, width: 1), borderRadius: BorderRadius.circular(15)),
                     child: DropdownButton<String>(
                       hint: SubTitleText(
                         text: "Please select category",
@@ -106,10 +104,7 @@ class _AddNewBlogState extends State<AddNewBlog> {
                       isExpanded: true,
                       underline: SizedBox(),
                       value: _selectedItem,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.primary),
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
                       onChanged: (String? newValue) async {
                         setState(() {
                           _selectedItem = newValue;
@@ -145,12 +140,10 @@ class _AddNewBlogState extends State<AddNewBlog> {
                   SizedBox(
                     height: 180.h,
                   ),
-                  CustomButton(
-                      ontap: () async {
+                  PrimaryButton(
+                      onTap: () async {
                         try {
-                          await FirebaseFirestore.instance
-                              .collection("blogs")
-                              .add({
+                          await FirebaseFirestore.instance.collection("blogs").add({
                             "uid": FirebaseAuth.instance.currentUser!.uid,
                             'title': _titleController.text,
                             'description': _descriptionController.text,
@@ -159,12 +152,9 @@ class _AddNewBlogState extends State<AddNewBlog> {
                         } catch (e) {
                           print(e);
                         }
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => CustomBottomAppBar()));
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => CustomBottomAppBar()));
                       },
-                      buttontitle: "Upload"),
+                      buttonTitle: "Upload"),
                 ],
               ),
             ),

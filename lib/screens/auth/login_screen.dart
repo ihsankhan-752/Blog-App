@@ -1,13 +1,16 @@
 import 'package:blog_app/constants/app_text_style.dart';
-import 'package:blog_app/screens/auth/forget_password.dart';
 import 'package:blog_app/screens/auth/sign_up_screen.dart';
 import 'package:blog_app/screens/home/bottom_appbar.dart';
-import 'package:blog_app/widgets.dart';
 import 'package:blog_app/widgets/app_logo.dart';
-import 'package:blog_app/widgets/custom_button.dart';
-import 'package:blog_app/widgets/custom_textfields.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
+import '../../constants/app_colors.dart';
+import '../../widgets/buttons.dart';
+import '../../widgets/text_inputs.dart';
+import 'forget_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -68,19 +71,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Padding(
-        padding:
-            EdgeInsets.fromLTRB(15, MediaQuery.of(context).padding.top, 15, 15),
+        padding: EdgeInsets.fromLTRB(15, MediaQuery.of(context).padding.top, 15, 15),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppLogo(),
+              SizedBox(height: 100.h),
+              Center(child: AppLogo(height: 80.h)),
               SizedBox(height: 10),
-              TitleText(
-                  text: "Welcome Back!",
-                  color: Theme.of(context).colorScheme.primary),
-              TitleText(
-                  text: "Login", color: Theme.of(context).colorScheme.primary),
-              SizedBox(height: 30),
+              TitleText(text: "Welcome Back!", color: AppColors.primaryBlack),
+              SizedBox(height: 20),
               CustomTextField(
                 hintTitle: "Email",
                 controller: _emailController,
@@ -91,58 +91,53 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomPasswordTextField(
                 controller: _passwordController,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CustomTextButton(
-                    textButtonText: "Forgot Password?",
-                    onclick: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ForgetPassword()),
-                      );
-                    },
-                    fontSize: 15,
+              SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(() => ForgetPasswordScreen());
+                  },
+                  child: Text(
+                    "Forgot Password?",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ],
+                ),
               ),
               SizedBox(height: 20),
-              CustomButton(
-                ontap: () => _login(context),
-                // try {
-                //   FirebaseAuth auth = FirebaseAuth.instance;
-                //   await auth.signInWithEmailAndPassword(
-                //       email: _emailController.text,
-                //       password: _passwordController.text);
-                // } catch (e) {
-                //   print(e.toString());
-                // }
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => CustomBottomAppBar()),
-                // );
-
-                buttontitle: "Login",
+              PrimaryButton(
+                onTap: () => _login(context),
+                buttonTitle: "Login",
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SubTitleText(
-                    text: "Don't Have an account?",
-                  ),
-                  CustomTextButton(
-                    textButtonText: "SignUp",
-                    onclick: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignUpScreen()),
-                      );
-                    },
-                    fontSize: 16,
-                  ),
-                ],
+              SizedBox(height: 20),
+              GestureDetector(
+                onTap: () {
+                  Get.to(() => SignUpScreen());
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't have an Account?",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      " Sign Up",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 20),
             ],

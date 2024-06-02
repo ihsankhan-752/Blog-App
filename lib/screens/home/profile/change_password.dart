@@ -1,7 +1,8 @@
-import 'package:blog_app/widgets/custom_button.dart';
-import 'package:blog_app/widgets/custom_textfields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../widgets/buttons.dart';
+import '../../../widgets/text_inputs.dart';
 
 class ChangePassword extends StatelessWidget {
   const ChangePassword({super.key});
@@ -46,11 +47,11 @@ class ChangePassword extends StatelessWidget {
             SizedBox(
               height: 40.h,
             ),
-            CustomButton(
-              ontap: () {
+            PrimaryButton(
+              onTap: () {
                 Navigator.pop(context);
               },
-              buttontitle: "Change Password",
+              buttonTitle: "Change Password",
               width: double.infinity,
             ),
           ],

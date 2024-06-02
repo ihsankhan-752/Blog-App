@@ -1,12 +1,13 @@
 import 'dart:io';
 
 import 'package:blog_app/constants/app_colors.dart';
-import 'package:blog_app/widgets/custom_button.dart';
-import 'package:blog_app/widgets/custom_textfields.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../../widgets/buttons.dart';
+import '../../../widgets/text_inputs.dart';
 
 class EditProfile extends StatefulWidget {
   EditProfile({Key? key}) : super(key: key);
@@ -19,8 +20,7 @@ class _EditProfileState extends State<EditProfile> {
   File? selactedImage;
 
   getImageFromGallery() async {
-    XFile? picketImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    XFile? picketImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       selactedImage = File(picketImage!.path);
     });
@@ -34,10 +34,7 @@ class _EditProfileState extends State<EditProfile> {
           centerTitle: true,
           title: Text(
             "Edit Profile",
-            style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).colorScheme.primary),
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -53,15 +50,12 @@ class _EditProfileState extends State<EditProfile> {
                       Container(
                           width: 100.w,
                           height: 100.h,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey.shade300),
+                          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey.shade300),
                           child: selactedImage == null
                               ? Center(
                                   child: Icon(
                                     Icons.person,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(context).colorScheme.primary,
                                     size: 50.sp,
                                   ),
                                 )
@@ -122,12 +116,11 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   height: 20.h,
                 ),
-                CustomButton(
-                  ontap: () async {
+                PrimaryButton(
+                  onTap: () async {
                     try {
                       FirebaseStorage fs = FirebaseStorage.instance;
-                      Reference ref = await fs.ref().child(
-                          DateTime.now().millisecondsSinceEpoch.toString());
+                      Reference ref = await fs.ref().child(DateTime.now().millisecondsSinceEpoch.toString());
 
                       await ref.putFile(File(selactedImage!.path));
 
@@ -136,7 +129,7 @@ class _EditProfileState extends State<EditProfile> {
                       print(e);
                     }
                   },
-                  buttontitle: "Update",
+                  buttonTitle: "Update",
                   width: double.infinity,
                 ),
                 SizedBox(

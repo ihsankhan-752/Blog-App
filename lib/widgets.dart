@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomTextButton extends StatelessWidget {
-  CustomTextButton({
-    required this.onclick,
-    required this.textButtonText,
-    required this.fontSize,
-    super.key,
-  });
+  final VoidCallback onclick;
+  final String textButtonText;
+  final double fontSize;
 
-  VoidCallback onclick;
-  String textButtonText;
-  double fontSize;
+  CustomTextButton({required this.onclick, required this.textButtonText, required this.fontSize, super.key});
 
   @override
   Widget build(BuildContext context) {
