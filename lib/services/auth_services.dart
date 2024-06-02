@@ -1,5 +1,6 @@
 import 'package:blog_app/controllers/loading_controller.dart';
 import 'package:blog_app/models/user_model.dart';
+import 'package:blog_app/screens/auth/login_screen.dart';
 import 'package:blog_app/screens/home/home.dart';
 import 'package:blog_app/widgets/custom_msg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,7 +42,6 @@ class AuthServices {
       } on FirebaseException catch (e) {
         Provider.of<LoadingController>(context, listen: false).setLoading(false);
         showCustomMsg(context, e.message!);
-
       }
     }
   }
@@ -58,6 +58,23 @@ class AuthServices {
         Provider.of<LoadingController>(context, listen: false).setLoading(false);
 
         Get.to(() => Home());
+      } on FirebaseException catch (e) {
+        Provider.of<LoadingController>(context, listen: false).setLoading(false);
+        showCustomMsg(context, e.message!);
+      }
+    }
+  }
+
+  Future<void> resetPassword(BuildContext context, String email) async {
+    if (email.isEmpty) {
+      showCustomMsg(context, "Email required");
+    } else {
+      try {
+        Provider.of<LoadingController>(context, listen: false).setLoading(true);
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+        Provider.of<LoadingController>(context, listen: false).setLoading(false);
+        showCustomMsg(context, "We Sent you an email for password reset please reset your email and login again");
+        Get.offAll(LoginScreen());
       } on FirebaseException catch (e) {
         Provider.of<LoadingController>(context, listen: false).setLoading(false);
         showCustomMsg(context, e.message!);
