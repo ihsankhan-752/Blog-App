@@ -1,3 +1,4 @@
+import 'package:blog_app/controllers/image_controller.dart';
 import 'package:blog_app/controllers/loading_controller.dart';
 import 'package:blog_app/screens/splash/splash_screen.dart';
 import 'package:blog_app/theme/theme_provider.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         return MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => LoadingController()),
+            ChangeNotifierProvider(create: (_) => ImageController()),
           ],
           child: GetMaterialApp(
             debugShowCheckedModeBanner: false,

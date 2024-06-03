@@ -2,10 +2,8 @@ import 'package:blog_app/constants/app_colors.dart';
 import 'package:blog_app/constants/app_text_style.dart';
 import 'package:blog_app/constants/lists.dart';
 import 'package:blog_app/controllers/loading_controller.dart';
-import 'package:blog_app/screens/custom_navbar/custom_navbar.dart';
+import 'package:blog_app/screens/custom_navbar/add_blog/widgets/image_uploading_widget.dart';
 import 'package:blog_app/services/blog_services.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,40 +50,7 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
         child: Column(
           children: [
             SizedBox(height: 10.h),
-            GestureDetector(
-              onTap: () {},
-              child: DottedBorder(
-                strokeWidth: 2,
-                color: Theme.of(context).colorScheme.secondary,
-                dashPattern: [8, 4],
-                borderType: BorderType.RRect,
-                radius: Radius.circular(12),
-                child: Container(
-                  height: 160.h,
-                  width: 350.w,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.image_outlined,
-                              color: Theme.of(context).colorScheme.primary,
-                              size: 25.sp,
-                            )),
-                        SubTitleText(
-                          text: "Add an Image",
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            ImageUploadingWidget(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
               child: Column(
