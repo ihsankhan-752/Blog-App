@@ -47,10 +47,16 @@ List<String> blogPublishBy = [
   "Latif",
 ];
 List<String> tabList = [
-  "All",
   "Technology",
   "Sports",
   "Politics",
+  "Health and Wellness:",
+  "Travel",
+  "Food and Recipes",
+  "Personal Development",
+  "Finance and Business",
+  "Education",
+  "Parenting and Family",
 ];
 
 final List<String> communityLogos = [

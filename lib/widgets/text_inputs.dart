@@ -5,18 +5,22 @@ class CustomTextField extends StatelessWidget {
   final IconData? iconData;
   final String? hintTitle;
   final Color? color;
+  final int? maxLines;
   final TextEditingController? controller;
   final Function(String)? onChanged;
 
-  CustomTextField({this.iconData, this.hintTitle, this.color, super.key, this.controller, this.onChanged});
+  CustomTextField({this.iconData, this.hintTitle, this.color, super.key, this.controller, this.onChanged, this.maxLines});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: TextStyle(
+        fontSize: 14,
+        color: AppColors.primaryBlack,
+      ),
       onChanged: onChanged,
       controller: controller,
-      minLines: 1,
-      maxLines: 10,
+      maxLines: maxLines ?? 1,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -27,12 +31,10 @@ class CustomTextField extends StatelessWidget {
           borderSide: BorderSide(color: AppColors.primaryColor),
         ),
         hintText: hintTitle,
-        prefixIcon: Icon(
-          iconData,
+        hintStyle: TextStyle(
+          fontSize: 14,
           color: Colors.grey,
-          size: 25,
         ),
-        hintStyle: TextStyle(),
       ),
     );
   }
