@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:blog_app/controllers/loading_controller.dart';
 import 'package:blog_app/models/blog_model.dart';
 import 'package:blog_app/screens/custom_navbar/custom_navbar.dart';
+import 'package:blog_app/services/image_compress_services.dart';
 import 'package:blog_app/services/storage_services.dart';
 import 'package:blog_app/widgets/custom_msg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,7 +29,8 @@ class BlogServices {
     } else {
       try {
         Provider.of<LoadingController>(context, listen: false).setLoading(true);
-        String imageUrl = await StorageServices().uploadPhoto(image);
+        File? _compressImage = await compressImage(image);
+        String imageUrl = await StorageServices().uploadPhoto(_compressImage);
 
         BlogModel blogModel = BlogModel(
           userId: FirebaseAuth.instance.currentUser!.uid,
