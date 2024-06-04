@@ -2,10 +2,9 @@ import 'package:blog_app/constants/app_colors.dart';
 import 'package:blog_app/constants/lists.dart';
 import 'package:blog_app/models/blog_model.dart';
 import 'package:blog_app/screens/custom_navbar/add_blog/add_blog_screen.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:blog_app/screens/custom_navbar/home/widgets/blog_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -98,50 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
                             BlogModel blogModel = BlogModel.fromMap(snapshot.data!.docs[index]);
-                            return Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              margin: EdgeInsets.only(top: 20),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 150.h,
-                                    width: Get.width,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(15),
-                                        topRight: Radius.circular(15),
-                                      ),
-                                      child: CachedNetworkImage(
-                                        imageUrl: blogModel.blogImage,
-                                        placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                                        errorWidget: (context, url, error) => Icon(Icons.error),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: Get.width * 0.8,
-                                          child: Text(
-                                            blogModel.title,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                        Icon(Icons.bookmark_border, size: 20, color: AppColors.primaryColor),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            );
+                            return BlogCard(blogModel: blogModel);
                           },
                         );
                       },

@@ -1,27 +1,57 @@
 import 'package:blog_app/constants/app_colors.dart';
-import 'package:blog_app/constants/app_text_style.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
+import '../../../models/blog_model.dart';
 
 class BlogDetailScreen extends StatelessWidget {
-  final String title;
-  final String image;
-  final String des;
-  BlogDetailScreen({Key? key, required this.image, required this.title, required this.des}) : super(key: key);
+  final BlogModel blogModel;
+  BlogDetailScreen({Key? key, required this.blogModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: double.infinity,
-            height: 200,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(image),
+            height: Get.height * 0.4,
+            width: Get.width,
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              ),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: blogModel.blogImage,
+                    placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    fit: BoxFit.cover,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 50.h, horizontal: 15.w),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Icon(
+                            Icons.arrow_back,
+                            size: 30.sp,
+                            color: AppColors.primaryBlack,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
           ),
@@ -30,8 +60,39 @@ class BlogDetailScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TitleText(text: title, color: AppColors.primaryBlack),
-                SubTitleText(text: des, color: AppColors.primaryLightBlack)
+                Row(
+                  children: [
+                    Icon(Icons.favorite, color: Colors.redAccent, size: 20),
+                    SizedBox(width: 05),
+                    Text(
+                      "233",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                    Spacer(),
+                    Icon(Icons.bookmark),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+                Text(
+                  blogModel.title,
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(height: 05.h),
+                Text(
+                  blogModel.description,
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 12,
+                  ),
+                )
               ],
             ),
           )
