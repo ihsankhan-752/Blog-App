@@ -50,7 +50,7 @@ List<String> tabList = [
   "Technology",
   "Sports",
   "Politics",
-  "Health and Wellness:",
+  "Health and Wellness",
   "Travel",
   "Food and Recipes",
   "Personal Development",

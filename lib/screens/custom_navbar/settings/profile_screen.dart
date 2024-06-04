@@ -24,101 +24,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: AppColors.primaryColor,
         automaticallyImplyLeading: false,
         title: TitleText(
           text: "My Account",
           color: AppColors.primaryWhite,
         ),
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Stack(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 30.h),
-                  color: Theme.of(context).colorScheme.primary,
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 50.h),
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.background,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 60.h),
-                            CustomProfileCard(
-                              iconData: Icons.account_circle,
-                              text: "Edit Profile",
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                                  return EditProfile();
-                                }));
-                              },
-                            ),
-                            CustomProfileCard(
-                              iconData: Icons.lock_reset,
-                              text: "Change Password",
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                                  return ChangePassword();
-                                }));
-                              },
-                            ),
-                            CustomProfileCard(
-                              iconData: Icons.light_mode,
-                              text: "Light Theme",
-                              onTap: () {
-                                Provider.of<ThemeProvider>(context, listen: false).toggleTheme(lightTheme);
-                              },
-                            ),
-                            CustomProfileCard(
-                              iconData: Icons.nights_stay_sharp,
-                              text: "Dark Theme",
-                              onTap: () {
-                                Provider.of<ThemeProvider>(context, listen: false).toggleTheme(darkTheme);
-                              },
-                            ),
-                            CustomProfileCard(
-                              iconData: Icons.logout,
-                              text: "Logout",
-                              onTap: () {},
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 20.h,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.primaryLightGrey, // Set the desired border color here
-                        width: 1, // Set the desired border width here
-                      ),
-                    ),
-                    child: Center(
-                      child: CircleAvatar(
-                        radius: 50.sp,
-                        backgroundImage: AssetImage('assets/profile.jpg'),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            SizedBox(height: 20),
+            Center(
+              child: CircleAvatar(
+                radius: 50.sp,
+                backgroundImage: AssetImage('assets/profile.jpg'),
+              ),
+            ),
+            SizedBox(height: 20),
+            CustomProfileCard(
+              iconData: Icons.account_circle,
+              title: "Edit Profile",
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                  return EditProfile();
+                }));
+              },
+            ),
+            CustomProfileCard(
+              iconData: Icons.lock_reset,
+              title: "Change Password",
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                  return ChangePassword();
+                }));
+              },
+            ),
+            CustomProfileCard(
+              iconData: Icons.light_mode,
+              title: "Light Theme",
+              onTap: () {
+                Provider.of<ThemeProvider>(context, listen: false).toggleTheme(lightTheme);
+              },
+            ),
+            CustomProfileCard(
+              iconData: Icons.nights_stay_sharp,
+              title: "Dark Theme",
+              onTap: () {
+                Provider.of<ThemeProvider>(context, listen: false).toggleTheme(darkTheme);
+              },
+            ),
+            CustomProfileCard(
+              iconData: Icons.logout,
+              title: "Logout",
+              onTap: () {},
             ),
           ],
         ),
