@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  String _selectedTab = "Technology";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 return GestureDetector(
                   onTap: () {
                     _currentIndex = index;
+                    _selectedTab = tabList[index];
+                    print(_selectedTab);
                     setState(() {});
                   },
                   child: Container(
@@ -82,7 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Expanded(
                     child: StreamBuilder(
-                      stream: FirebaseFirestore.instance.collection('blogs').snapshots(),
+                      stream:
+                          FirebaseFirestore.instance.collection('blogs').where('category', isEqualTo: _selectedTab).snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           return Center(
@@ -90,7 +94,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         } else if (snapshot.data!.docs.isEmpty) {
                           return Center(
-                            child: Text("No Blogs Found"),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.note_alt, size: 80, color: AppColors.primaryColor),
+                                SizedBox(height: 07),
+                                Text(
+                                  "No Blogs Found",
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    color: AppColors.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         }
                         return ListView.builder(
