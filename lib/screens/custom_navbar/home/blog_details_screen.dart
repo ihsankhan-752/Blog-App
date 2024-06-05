@@ -101,7 +101,7 @@ class BlogDetailScreen extends StatelessWidget {
                     }),
                 SizedBox(height: 10.h),
                 Text(
-                  blogModel.title,
+                  blogModel.title + " ",
                   style: TextStyle(
                     color: AppColors.primaryColor,
                     fontWeight: FontWeight.bold,
