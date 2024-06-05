@@ -25,41 +25,27 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerPr
   late Animation<Offset> _imageAnimation;
 
   bool _showBigHeart = false;
-  bool _isLiked = false;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    );
+    _controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
 
     _likeAnimation = Tween<Offset>(
       begin: Offset(-1.5, 0),
       end: Offset(0, 0),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    ));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _shareAnimation = Tween<Offset>(
       begin: Offset(1.5, 0),
       end: Offset(0, 0),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    ));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _imageAnimation = Tween<Offset>(
       begin: Offset(0, -1.5),
       end: Offset(0, 0),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    ));
-
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
     _controller.forward();
   }
 
@@ -76,7 +62,6 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerPr
 
     if (!favoriteIdsList.contains(currentUserId)) {
       setState(() {
-        _isLiked = true;
         _showBigHeart = true;
       });
       await BlogServices().likeAndDislikeBlog(widget.blogModel.blogId);
@@ -86,9 +71,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerPr
         });
       });
     } else {
-      setState(() {
-        _isLiked = false;
-      });
+      setState(() {});
       await BlogServices().likeAndDislikeBlog(widget.blogModel.blogId);
     }
   }
@@ -163,9 +146,12 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerPr
                               position: _likeAnimation,
                               child: GestureDetector(
                                 onTap: _toggleFavorite,
-                                child: data['favoriteIdsList'].contains(FirebaseAuth.instance.currentUser!.uid)
-                                    ? Icon(Icons.favorite, size: 25.sp, color: Colors.red)
-                                    : Icon(Icons.favorite_border, color: Colors.grey, size: 25.sp),
+                                child: Icon(
+                                  data['favoriteIdsList'].contains(FirebaseAuth.instance.currentUser!.uid)
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  size: 25.sp,
+                                ),
                               ),
                             ),
                             SizedBox(width: 5),
@@ -195,7 +181,9 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerPr
                                 child: SizedBox(
                                   height: 25.h,
                                   width: 30.w,
-                                  child: Image.asset('assets/share.png'),
+                                  child: Image.asset(
+                                    'assets/share.png',
+                                  ),
                                 ),
                               ),
                             )
@@ -228,7 +216,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerPr
           if (_showBigHeart)
             Center(
               child: AnimatedOpacity(
-                opacity: _showBigHeart ? 1.0 : 0.0,
+                opacity: _showBigHeart ? 0.5 : 0.0,
                 duration: Duration(milliseconds: 500),
                 child: Icon(
                   Icons.favorite,
