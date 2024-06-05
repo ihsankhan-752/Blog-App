@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../models/blog_model.dart';
 
@@ -91,17 +92,27 @@ class BlogDetailScreen extends StatelessWidget {
                             ),
                           ),
                           Spacer(),
-                          SizedBox(
-                            height: 25.h,
-                            width: 30.w,
-                            child: Image.asset('assets/share.png'),
+                          GestureDetector(
+                            onTap: () async {
+                              final box = context.findRenderObject() as RenderBox?;
+                              await Share.share(
+                                blogModel.title,
+                                subject: blogModel.description,
+                                sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+                              );
+                            },
+                            child: SizedBox(
+                              height: 25.h,
+                              width: 30.w,
+                              child: Image.asset('assets/share.png'),
+                            ),
                           )
                         ],
                       );
                     }),
                 SizedBox(height: 10.h),
                 Text(
-                  blogModel.title + " ",
+                  blogModel.title,
                   style: TextStyle(
                     color: AppColors.primaryColor,
                     fontWeight: FontWeight.bold,
