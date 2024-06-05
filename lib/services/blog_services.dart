@@ -79,7 +79,7 @@ class BlogServices extends ChangeNotifier {
     return FirebaseFirestore.instance.collection('blogs').doc(blogId).snapshots();
   }
 
-  void likeAndDislikeBlog(String blogId) async {
+  likeAndDislikeBlog(String blogId) async {
     try {
       DocumentSnapshot snap = await FirebaseFirestore.instance.collection('blogs').doc(blogId).get();
 
