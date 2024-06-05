@@ -9,9 +9,61 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../models/blog_model.dart';
 
-class BlogDetailScreen extends StatelessWidget {
+class BlogDetailScreen extends StatefulWidget {
   final BlogModel blogModel;
   BlogDetailScreen({Key? key, required this.blogModel}) : super(key: key);
+
+  @override
+  _BlogDetailScreenState createState() => _BlogDetailScreenState();
+}
+
+class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _likeAnimation;
+  late Animation<Offset> _shareAnimation;
+  late Animation<Offset> _imageAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+
+    _likeAnimation = Tween<Offset>(
+      begin: Offset(-1.5, 0),
+      end: Offset(0, 0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOut,
+    ));
+
+    _shareAnimation = Tween<Offset>(
+      begin: Offset(1.5, 0),
+      end: Offset(0, 0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOut,
+    ));
+
+    _imageAnimation = Tween<Offset>(
+      begin: Offset(0, -1.5),
+      end: Offset(0, 0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOut,
+    ));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,42 +71,45 @@ class BlogDetailScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: Get.height * 0.4,
-            width: Get.width,
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: blogModel.blogImage,
-                    placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
-                    fit: BoxFit.cover,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 50.h, horizontal: 15.w),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: Icon(
-                            Icons.arrow_back,
-                            size: 30.sp,
-                            color: AppColors.primaryBlack,
-                          ),
-                        ),
-                      ],
+          SlideTransition(
+            position: _imageAnimation,
+            child: Container(
+              height: Get.height * 0.4,
+              width: Get.width,
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                ),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: widget.blogModel.blogImage,
+                      placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      fit: BoxFit.cover,
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 50.h, horizontal: 15.w),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.back();
+                            },
+                            child: Icon(
+                              Icons.arrow_back,
+                              size: 30.sp,
+                              color: AppColors.primaryBlack,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -64,26 +119,31 @@ class BlogDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 StreamBuilder(
-                    stream: BlogServices().getBlogStream(blogModel.blogId),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: Text("loading..."),
-                        );
-                      }
-                      var data = snapshot.data!;
-                      return Row(
-                        children: [
-                          GestureDetector(
+                  stream: BlogServices().getBlogStream(widget.blogModel.blogId),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: Text("loading..."),
+                      );
+                    }
+                    var data = snapshot.data!;
+                    return Row(
+                      children: [
+                        SlideTransition(
+                          position: _likeAnimation,
+                          child: GestureDetector(
                             onTap: () {
-                              BlogServices().likeAndDislikeBlog(blogModel.blogId);
+                              BlogServices().likeAndDislikeBlog(widget.blogModel.blogId);
                             },
                             child: data['favoriteIdsList'].contains(FirebaseAuth.instance.currentUser!.uid)
                                 ? Icon(Icons.favorite, size: 25.sp, color: Colors.red)
                                 : Icon(Icons.favorite_border, color: Colors.grey, size: 25.sp),
                           ),
-                          SizedBox(width: 05),
-                          Text(
+                        ),
+                        SizedBox(width: 5),
+                        SlideTransition(
+                          position: _likeAnimation,
+                          child: Text(
                             data['favoriteIdsList'].length.toString(),
                             style: TextStyle(
                               fontSize: 14,
@@ -91,13 +151,16 @@ class BlogDetailScreen extends StatelessWidget {
                               color: AppColors.primaryColor,
                             ),
                           ),
-                          Spacer(),
-                          GestureDetector(
+                        ),
+                        Spacer(),
+                        SlideTransition(
+                          position: _shareAnimation,
+                          child: GestureDetector(
                             onTap: () async {
                               final box = context.findRenderObject() as RenderBox?;
                               await Share.share(
-                                blogModel.title,
-                                subject: blogModel.description,
+                                widget.blogModel.title,
+                                subject: widget.blogModel.description,
                                 sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
                               );
                             },
@@ -106,22 +169,24 @@ class BlogDetailScreen extends StatelessWidget {
                               width: 30.w,
                               child: Image.asset('assets/share.png'),
                             ),
-                          )
-                        ],
-                      );
-                    }),
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                ),
                 SizedBox(height: 10.h),
                 Text(
-                  blogModel.title,
+                  widget.blogModel.title,
                   style: TextStyle(
                     color: AppColors.primaryColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
                 ),
-                SizedBox(height: 05.h),
+                SizedBox(height: 5.h),
                 Text(
-                  blogModel.description,
+                  widget.blogModel.description,
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: 12,
