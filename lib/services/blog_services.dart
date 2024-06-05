@@ -11,8 +11,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
-class BlogServices {
+class BlogServices extends ChangeNotifier {
   Future<void> addNewBlog({
     required BuildContext context,
     File? image,
@@ -28,19 +29,22 @@ class BlogServices {
       showCustomMsg(context, "Description required");
     } else {
       try {
+        var blogId = const Uuid().v4();
         Provider.of<LoadingController>(context, listen: false).setLoading(true);
         File? _compressImage = await compressImage(image);
         String imageUrl = await StorageServices().uploadPhoto(_compressImage);
 
         BlogModel blogModel = BlogModel(
+          blogId: blogId,
           userId: FirebaseAuth.instance.currentUser!.uid,
           blogImage: imageUrl,
           category: category,
           title: title,
           description: description,
+          favoriteIdsList: [],
           publishedOn: DateTime.now(),
         );
-        await FirebaseFirestore.instance.collection('blogs').add(blogModel.toMap());
+        await FirebaseFirestore.instance.collection('blogs').doc(blogId).set(blogModel.toMap());
         Provider.of<LoadingController>(context, listen: false).setLoading(false);
         showCustomMsg(context, "Blog Uploaded");
         Get.offAll(() => CustomNavBar());
@@ -49,6 +53,48 @@ class BlogServices {
 
         showCustomMsg(context, e.message!);
       }
+    }
+  }
+
+  addBlogToBookmark(BuildContext context, String blogId) async {
+    try {
+      DocumentSnapshot snap =
+          await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+
+      if (snap['bookMarkBlogs'].contains(blogId)) {
+        await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+          'bookMarkBlogs': FieldValue.arrayRemove([blogId]),
+        });
+      } else {
+        await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+          'bookMarkBlogs': FieldValue.arrayUnion([blogId]),
+        });
+      }
+    } on FirebaseException catch (e) {
+      showCustomMsg(context, e.message!);
+    }
+  }
+
+  Stream<DocumentSnapshot> getBlogStream(String blogId) {
+    return FirebaseFirestore.instance.collection('blogs').doc(blogId).snapshots();
+  }
+
+  void likeAndDislikeBlog(String blogId) async {
+    try {
+      DocumentSnapshot snap = await FirebaseFirestore.instance.collection('blogs').doc(blogId).get();
+
+      if ((snap['favoriteIdsList'] as List).contains(FirebaseAuth.instance.currentUser!.uid)) {
+        await FirebaseFirestore.instance.collection('blogs').doc(blogId).update({
+          'favoriteIdsList': FieldValue.arrayRemove([FirebaseAuth.instance.currentUser!.uid]),
+        });
+      } else {
+        await FirebaseFirestore.instance.collection('blogs').doc(blogId).update({
+          'favoriteIdsList': FieldValue.arrayUnion([FirebaseAuth.instance.currentUser!.uid]),
+        });
+      }
+      notifyListeners();
+    } on FirebaseException catch (e) {
+      print(e.message);
     }
   }
 }

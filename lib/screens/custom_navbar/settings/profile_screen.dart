@@ -3,12 +3,15 @@ import 'package:blog_app/constants/app_text_style.dart';
 import 'package:blog_app/screens/custom_navbar/settings/change_password.dart';
 import 'package:blog_app/screens/custom_navbar/settings/edit_profile.dart';
 import 'package:blog_app/screens/custom_navbar/settings/widgets/profile_card.dart';
+import 'package:blog_app/services/auth_services.dart';
 import 'package:blog_app/theme/dark_theme.dart';
 import 'package:blog_app/theme/light_theme.dart';
 import 'package:blog_app/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
+import '../../../widgets/custom_alert_dialog.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
@@ -77,12 +80,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             CustomProfileCard(
               iconData: Icons.logout,
               title: "Logout",
-              onTap: () {},
+              onTap: () {
+                customAlertDialog(context, () {
+                  AuthServices().logOut();
+                });
+              },
             ),
           ],
         ),
       ),
     );
-    ;
   }
 }

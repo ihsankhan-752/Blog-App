@@ -4,14 +4,14 @@ class UserModel {
   final String userId;
   final String username;
   final String email;
-  final List favouriteBlogsId;
+  final List bookMarkBlogs;
   final DateTime memberSince;
 
   UserModel({
     required this.email,
     required this.username,
     required this.userId,
-    required this.favouriteBlogsId,
+    required this.bookMarkBlogs,
     required this.memberSince,
   });
 
@@ -20,7 +20,7 @@ class UserModel {
       'email': email,
       'userId': userId,
       'username': username,
-      'favouriteBlogsId': favouriteBlogsId,
+      'bookMarkBlogs': bookMarkBlogs,
       'memberSince': memberSince,
     };
   }
@@ -30,7 +30,7 @@ class UserModel {
       email: snap['email'],
       username: snap['username'],
       userId: snap['userId'],
-      favouriteBlogsId: snap['favouriteBlogsId'],
+      bookMarkBlogs: snap['bookMarkBlogs'],
       memberSince: (snap['memberSince'].toDate()),
     );
   }

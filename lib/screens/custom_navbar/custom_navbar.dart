@@ -1,6 +1,8 @@
 import 'package:blog_app/constants/app_colors.dart';
+import 'package:blog_app/controllers/user_controller.dart';
 import 'package:blog_app/screens/custom_navbar/widgets/bottom_tab_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/lists.dart';
 
@@ -13,6 +15,16 @@ class CustomNavBar extends StatefulWidget {
 
 class _CustomNavBarState extends State<CustomNavBar> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  getCurrentUser() async {
+    await Provider.of<UserController>(context, listen: false).getUserInformation();
+  }
 
   @override
   Widget build(BuildContext context) {

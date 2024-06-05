@@ -1,8 +1,11 @@
+import 'package:blog_app/controllers/user_controller.dart';
 import 'package:blog_app/screens/custom_navbar/home/blog_details_screen.dart';
+import 'package:blog_app/services/blog_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../constants/app_colors.dart';
 import '../../../../models/blog_model.dart';
@@ -13,6 +16,7 @@ class BlogCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userController = Provider.of<UserController>(context).userModel;
     return GestureDetector(
       onTap: () {
         Get.to(() => BlogDetailScreen(blogModel: blogModel));
@@ -50,11 +54,22 @@ class BlogCard extends StatelessWidget {
                       blogModel.title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 15.sp,
                       ),
                     ),
                   ),
-                  Icon(Icons.bookmark_border, size: 20, color: AppColors.primaryColor),
+                  GestureDetector(
+                    onTap: () async {
+                      BlogServices().addBlogToBookmark(context, blogModel.blogId);
+                    },
+                    child: userController!.bookMarkBlogs.contains(blogModel.blogId)
+                        ? Icon(Icons.bookmark, color: AppColors.primaryColor, size: 25.sp)
+                        : Icon(
+                            Icons.bookmark_border,
+                            size: 25.sp,
+                            color: AppColors.primaryColor,
+                          ),
+                  ),
                 ],
               ),
             )

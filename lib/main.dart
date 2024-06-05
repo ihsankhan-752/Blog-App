@@ -1,6 +1,8 @@
 import 'package:blog_app/controllers/image_controller.dart';
 import 'package:blog_app/controllers/loading_controller.dart';
+import 'package:blog_app/controllers/user_controller.dart';
 import 'package:blog_app/screens/splash/splash_screen.dart';
+import 'package:blog_app/services/blog_services.dart';
 import 'package:blog_app/theme/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +42,8 @@ class MyApp extends StatelessWidget {
           providers: [
             ChangeNotifierProvider(create: (_) => LoadingController()),
             ChangeNotifierProvider(create: (_) => ImageController()),
+            ChangeNotifierProvider(create: (_) => UserController()),
+            ChangeNotifierProvider(create: (_) => BlogServices()),
           ],
           child: GetMaterialApp(
             debugShowCheckedModeBanner: false,

@@ -1,5 +1,7 @@
 import 'package:blog_app/constants/app_colors.dart';
+import 'package:blog_app/services/blog_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -60,22 +62,43 @@ class BlogDetailScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Icon(Icons.favorite, color: Colors.redAccent, size: 20),
-                    SizedBox(width: 05),
-                    Text(
-                      "233",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                    Spacer(),
-                    Icon(Icons.bookmark),
-                  ],
-                ),
+                StreamBuilder(
+                    stream: BlogServices().getBlogStream(blogModel.blogId),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: Text("loading..."),
+                        );
+                      }
+                      var data = snapshot.data!;
+                      return Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              BlogServices().likeAndDislikeBlog(blogModel.blogId);
+                            },
+                            child: data['favoriteIdsList'].contains(FirebaseAuth.instance.currentUser!.uid)
+                                ? Icon(Icons.favorite, size: 25.sp, color: Colors.red)
+                                : Icon(Icons.favorite_border, color: Colors.grey, size: 25.sp),
+                          ),
+                          SizedBox(width: 05),
+                          Text(
+                            data['favoriteIdsList'].length.toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                          Spacer(),
+                          SizedBox(
+                            height: 25.h,
+                            width: 30.w,
+                            child: Image.asset('assets/share.png'),
+                          )
+                        ],
+                      );
+                    }),
                 SizedBox(height: 10.h),
                 Text(
                   blogModel.title,
