@@ -59,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: "Change Password",
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                  return ChangePassword();
+                  return ChangePasswordScreen();
                 }));
               },
             ),

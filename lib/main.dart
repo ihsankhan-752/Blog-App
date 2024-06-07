@@ -1,6 +1,7 @@
 import 'package:blog_app/controllers/image_controller.dart';
 import 'package:blog_app/controllers/loading_controller.dart';
 import 'package:blog_app/controllers/user_controller.dart';
+import 'package:blog_app/controllers/visibility_controller.dart';
 import 'package:blog_app/screens/splash/splash_screen.dart';
 import 'package:blog_app/services/blog_services.dart';
 import 'package:blog_app/theme/theme_provider.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => ImageController()),
             ChangeNotifierProvider(create: (_) => UserController()),
             ChangeNotifierProvider(create: (_) => BlogServices()),
+            ChangeNotifierProvider(create: (_) => VisibilityController()),
           ],
           child: GetMaterialApp(
             debugShowCheckedModeBanner: false,
