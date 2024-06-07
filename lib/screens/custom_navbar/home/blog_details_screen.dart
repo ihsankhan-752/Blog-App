@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../models/blog_model.dart';
+import '../../../widgets/buttons.dart';
 
 class BlogDetailScreen extends StatefulWidget {
   final BlogModel blogModel;
@@ -79,6 +80,20 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: widget.blogModel.userId != FirebaseAuth.instance.currentUser!.uid
+          ? SizedBox()
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                EditAndDeleteButton(color: AppColors.primaryColor, title: "Edit"),
+                SizedBox(width: 10),
+                EditAndDeleteButton(
+                  onPressed: () async {},
+                  color: Colors.red,
+                  title: "Delete",
+                ),
+              ],
+            ),
       body: Stack(
         children: [
           Column(
@@ -104,18 +119,21 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerPr
                           fit: BoxFit.cover,
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 50.h, horizontal: 15.w),
+                          padding: EdgeInsets.symmetric(vertical: 50.h, horizontal: 10.w),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              GestureDetector(
-                                onTap: () {
+                              IconButton(
+                                onPressed: () {
                                   Get.back();
                                 },
-                                child: Icon(
+                                style: IconButton.styleFrom(
+                                  backgroundColor: AppColors.primaryColor,
+                                ),
+                                icon: Icon(
                                   Icons.arrow_back,
-                                  size: 30.sp,
-                                  color: AppColors.primaryBlack,
+                                  size: 25.r,
+                                  color: AppColors.primaryWhite,
                                 ),
                               ),
                             ],
@@ -197,7 +215,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerPr
                       style: TextStyle(
                         color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 16,
                       ),
                     ),
                     SizedBox(height: 5.h),
@@ -205,7 +223,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerPr
                       widget.blogModel.description,
                       style: TextStyle(
                         color: Colors.black87,
-                        fontSize: 12,
+                        fontSize: 14,
                       ),
                     )
                   ],

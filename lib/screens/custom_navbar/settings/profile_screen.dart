@@ -1,9 +1,9 @@
 import 'package:blog_app/constants/app_colors.dart';
 import 'package:blog_app/constants/app_text_style.dart';
 import 'package:blog_app/controllers/user_controller.dart';
-import 'package:blog_app/screens/custom_navbar/favourite/favorites_screen.dart';
 import 'package:blog_app/screens/custom_navbar/settings/change_password.dart';
 import 'package:blog_app/screens/custom_navbar/settings/edit_profile.dart';
+import 'package:blog_app/screens/custom_navbar/settings/saved_blog_screen.dart';
 import 'package:blog_app/screens/custom_navbar/settings/widgets/profile_card.dart';
 import 'package:blog_app/services/auth_services.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               iconData: Icons.note_alt,
               title: "Saved Blogs",
               onTap: () {
-                Get.to(() => FavoriteScreen());
+                Get.to(() => SavedBlogScreen());
               },
             ),
             CustomProfileCard(
