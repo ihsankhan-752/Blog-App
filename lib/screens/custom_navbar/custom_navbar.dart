@@ -33,7 +33,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
         height: 60,
         decoration: BoxDecoration(border: Border(top: BorderSide(color: AppColors.primaryColor))),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -53,8 +53,8 @@ class _CustomNavBarState extends State<CustomNavBar> {
                     _currentIndex = 1;
                   });
                 },
-                icon: Icons.favorite,
-                title: "Favourite",
+                icon: Icons.add_a_photo,
+                title: "Add Blog",
                 activeColor: _currentIndex == 1 ? AppColors.primaryColor : Colors.grey,
               ),
               BottomTabWidget(
@@ -63,8 +63,8 @@ class _CustomNavBarState extends State<CustomNavBar> {
                     _currentIndex = 2;
                   });
                 },
-                icon: Icons.add_a_photo,
-                title: "Add Blog",
+                icon: Icons.notifications,
+                title: "Notification",
                 activeColor: _currentIndex == 2 ? AppColors.primaryColor : Colors.grey,
               ),
               BottomTabWidget(
@@ -73,19 +73,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
                     _currentIndex = 3;
                   });
                 },
-                icon: Icons.notifications,
-                title: "Notification",
-                activeColor: _currentIndex == 3 ? AppColors.primaryColor : Colors.grey,
-              ),
-              BottomTabWidget(
-                onPressed: () {
-                  setState(() {
-                    _currentIndex = 4;
-                  });
-                },
                 icon: Icons.settings,
                 title: "Settings",
-                activeColor: _currentIndex == 4 ? AppColors.primaryColor : Colors.grey,
+                activeColor: _currentIndex == 3 ? AppColors.primaryColor : Colors.grey,
               ),
             ],
           ),

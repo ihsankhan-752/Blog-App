@@ -1,7 +1,6 @@
 import 'package:blog_app/constants/app_colors.dart';
 import 'package:blog_app/constants/lists.dart';
 import 'package:blog_app/models/blog_model.dart';
-import 'package:blog_app/screens/custom_navbar/add_blog/add_blog_screen.dart';
 import 'package:blog_app/screens/custom_navbar/home/widgets/blog_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(() => AddBlogScreen());
-        },
-        backgroundColor: AppColors.primaryColor,
-        child: Icon(Icons.add),
       ),
       body: Column(
         children: [

@@ -1,6 +1,7 @@
 import 'package:blog_app/constants/app_colors.dart';
 import 'package:blog_app/constants/app_text_style.dart';
 import 'package:blog_app/controllers/user_controller.dart';
+import 'package:blog_app/screens/custom_navbar/favourite/favorites_screen.dart';
 import 'package:blog_app/screens/custom_navbar/settings/change_password.dart';
 import 'package:blog_app/screens/custom_navbar/settings/edit_profile.dart';
 import 'package:blog_app/screens/custom_navbar/settings/widgets/profile_card.dart';
@@ -68,6 +69,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(fontSize: 12, color: Colors.grey.shade900),
             ),
             SizedBox(height: 20),
+            CustomProfileCard(
+              iconData: Icons.note_alt,
+              title: "Saved Blogs",
+              onTap: () {
+                Get.to(() => FavoriteScreen());
+              },
+            ),
             CustomProfileCard(
               iconData: Icons.account_circle,
               title: "Edit Profile",

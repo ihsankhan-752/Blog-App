@@ -1,5 +1,4 @@
 import '../screens/custom_navbar/add_blog/add_blog_screen.dart';
-import '../screens/custom_navbar/favourite/favorites_screen.dart';
 import '../screens/custom_navbar/home/home_screen.dart';
 import '../screens/custom_navbar/notification/notification_screen.dart';
 import '../screens/custom_navbar/settings/profile_screen.dart';
@@ -55,7 +54,6 @@ final List<String> communityLogos = [
 
 List screens = [
   HomeScreen(),
-  FavoriteScreen(),
   AddBlogScreen(),
   NotificationScreen(),
   ProfileScreen(),
