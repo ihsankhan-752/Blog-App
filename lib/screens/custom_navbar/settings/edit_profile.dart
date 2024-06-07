@@ -1,33 +1,31 @@
-import 'dart:io';
-
 import 'package:blog_app/constants/app_colors.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:blog_app/controllers/image_controller.dart';
+import 'package:blog_app/controllers/loading_controller.dart';
+import 'package:blog_app/controllers/user_controller.dart';
+import 'package:blog_app/screens/custom_navbar/settings/widgets/image_picking_widget.dart';
+import 'package:blog_app/services/user_profile_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../../widgets/buttons.dart';
 import '../../../widgets/text_inputs.dart';
 
-class EditProfile extends StatefulWidget {
-  EditProfile({Key? key}) : super(key: key);
+class EditProfileScreen extends StatefulWidget {
+  EditProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfileState extends State<EditProfile> {
-  File? selactedImage;
-
-  getImageFromGallery() async {
-    XFile? picketImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      selactedImage = File(picketImage!.path);
-    });
-  }
-
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  TextEditingController _usernameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final imageController = Provider.of<ImageController>(context);
+    final userController = Provider.of<UserController>(context);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -47,21 +45,28 @@ class _EditProfileState extends State<EditProfile> {
                 Center(
                   child: Stack(
                     children: [
-                      Container(
+                      if (imageController.selectedImage == null && userController.userModel!.image == "")
+                        Container(
                           width: 100.w,
                           height: 100.h,
                           decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey.shade300),
-                          child: selactedImage == null
-                              ? Center(
-                                  child: Icon(
-                                    Icons.person,
-                                    color: Theme.of(context).colorScheme.primary,
-                                    size: 50.sp,
-                                  ),
-                                )
-                              : CircleAvatar(
-                                  backgroundImage: FileImage(selactedImage!),
-                                )),
+                          child: Center(
+                            child: Icon(
+                              Icons.person,
+                              size: 50.sp,
+                            ),
+                          ),
+                        ),
+                      if (imageController.selectedImage == null && userController.userModel!.image != "")
+                        CircleAvatar(
+                          radius: 50.r,
+                          backgroundImage: NetworkImage(userController.userModel!.image),
+                        ),
+                      if (imageController.selectedImage != null)
+                        CircleAvatar(
+                          radius: 55.r,
+                          backgroundImage: FileImage(imageController.selectedImage!),
+                        ),
                       Positioned(
                         right: 0.w,
                         bottom: 5.h,
@@ -80,15 +85,28 @@ class _EditProfileState extends State<EditProfile> {
                               )
                             ],
                           ),
-                          child: Center(
-                            child: IconButton(
-                              onPressed: () {
-                                getImageFromGallery();
-                              },
-                              icon: Icon(
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return imagePickingOptionDialog(
+                                    onCameraClicked: () {
+                                      Get.back();
+                                      imageController.pickImage(ImageSource.camera);
+                                    },
+                                    onGalleryClicked: () {
+                                      Get.back();
+                                      imageController.pickImage(ImageSource.gallery);
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            child: Center(
+                              child: Icon(
                                 Icons.mode_edit_sharp,
                                 size: 20.sp,
-                                color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
                           ),
@@ -97,41 +115,37 @@ class _EditProfileState extends State<EditProfile> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
+                SizedBox(height: 20.h),
                 CustomTextField(
-                  hintTitle: "Username",
+                  hintTitle: userController.userModel!.username,
+                  controller: _usernameController,
                   iconData: Icons.person,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                CustomTextField(
-                  hintTitle: "Email",
-                  iconData: Icons.email,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                PrimaryButton(
-                  onTap: () async {
-                    try {
-                      FirebaseStorage fs = FirebaseStorage.instance;
-                      Reference ref = await fs.ref().child(DateTime.now().millisecondsSinceEpoch.toString());
-
-                      await ref.putFile(File(selactedImage!.path));
-
-                      String url = await ref.getDownloadURL();
-                    } catch (e) {
-                      print(e);
-                    }
-                  },
-                  buttonTitle: "Update",
-                  width: double.infinity,
-                ),
+                SizedBox(height: 40.h),
+                Consumer<LoadingController>(builder: (context, loadingController, child) {
+                  return loadingController.isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(color: AppColors.primaryColor),
+                        )
+                      : PrimaryButton(
+                          onTap: () {
+                            UserProfileServices().updateProfile(
+                              context: context,
+                              image: imageController.selectedImage,
+                              username: _usernameController.text.isEmpty
+                                  ? userController.userModel!.username
+                                  : _usernameController.text,
+                            );
+                            imageController.clearUploadImage();
+                            setState(() {
+                              _usernameController.clear();
+                            });
+                          },
+                          buttonTitle: "Update",
+                          width: double.infinity,
+                        );
+                }),
                 SizedBox(
                   height: 20.h,
                 )

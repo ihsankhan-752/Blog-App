@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserModel {
   final String userId;
   final String username;
+  final String image;
   final String email;
   final List bookMarkBlogs;
   final DateTime memberSince;
@@ -11,6 +12,7 @@ class UserModel {
     required this.email,
     required this.username,
     required this.userId,
+    required this.image,
     required this.bookMarkBlogs,
     required this.memberSince,
   });
@@ -20,6 +22,7 @@ class UserModel {
       'email': email,
       'userId': userId,
       'username': username,
+      'image': image,
       'bookMarkBlogs': bookMarkBlogs,
       'memberSince': memberSince,
     };
@@ -29,6 +32,7 @@ class UserModel {
     return UserModel(
       email: snap['email'],
       username: snap['username'],
+      image: snap['image'],
       userId: snap['userId'],
       bookMarkBlogs: snap['bookMarkBlogs'],
       memberSince: (snap['memberSince'].toDate()),

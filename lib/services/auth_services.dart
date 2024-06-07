@@ -32,6 +32,7 @@ class AuthServices {
           username: username,
           userId: FirebaseAuth.instance.currentUser!.uid,
           bookMarkBlogs: [],
+          image: "",
           memberSince: DateTime.now(),
         );
 
