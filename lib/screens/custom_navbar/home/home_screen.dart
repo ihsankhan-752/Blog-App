@@ -4,6 +4,7 @@ import 'package:blog_app/models/blog_model.dart';
 import 'package:blog_app/screens/custom_navbar/home/widgets/blog_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,10 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 2,
         title: Text(
           "Blogs",
           style: TextStyle(
-            color: AppColors.primaryBlack,
+            color: AppColors.primaryColor,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
@@ -31,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
+          SizedBox(height: 15.h),
           SizedBox(
             height: 45,
             width: Get.width,

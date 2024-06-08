@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../models/blog_model.dart';
-import '../../../widgets/buttons.dart';
 
 class BlogDetailScreen extends StatefulWidget {
   final BlogModel blogModel;
@@ -80,20 +79,6 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: widget.blogModel.userId != FirebaseAuth.instance.currentUser!.uid
-          ? SizedBox()
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                EditAndDeleteButton(color: AppColors.primaryColor, title: "Edit"),
-                SizedBox(width: 10),
-                EditAndDeleteButton(
-                  onPressed: () async {},
-                  color: Colors.red,
-                  title: "Delete",
-                ),
-              ],
-            ),
       body: Stack(
         children: [
           Column(

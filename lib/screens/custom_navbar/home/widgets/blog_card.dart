@@ -2,6 +2,7 @@ import 'package:blog_app/controllers/user_controller.dart';
 import 'package:blog_app/screens/custom_navbar/home/blog_details_screen.dart';
 import 'package:blog_app/services/blog_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants/app_colors.dart';
 import '../../../../models/blog_model.dart';
+import '../edit_blog_screen.dart';
 
 class BlogCard extends StatelessWidget {
   final BlogModel blogModel;
@@ -36,11 +38,45 @@ class BlogCard extends StatelessWidget {
                   topLeft: Radius.circular(15),
                   topRight: Radius.circular(15),
                 ),
-                child: CachedNetworkImage(
-                  imageUrl: blogModel.blogImage,
-                  placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                  fit: BoxFit.cover,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: blogModel.blogImage,
+                      placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      fit: BoxFit.cover,
+                    ),
+                    if (blogModel.userId != FirebaseAuth.instance.currentUser!.uid)
+                      SizedBox()
+                    else
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: PopupMenuButton(
+                            iconColor: AppColors.primaryWhite,
+                            onSelected: (v) async {
+                              if (v == 'delete') {
+                                await BlogServices().deleteBlog(context, blogModel.blogId);
+                              }
+                              if (v == 'edit') {
+                                Get.to(() => EditBlogScreen(blogModel: blogModel));
+                              }
+                            },
+                            itemBuilder: (context) {
+                              return [
+                                PopupMenuItem(
+                                  child: Text("Edit"),
+                                  value: 'edit',
+                                ),
+                                PopupMenuItem(
+                                  child: Text("Delete"),
+                                  value: 'delete',
+                                )
+                              ];
+                            }),
+                      )
+                  ],
                 ),
               ),
             ),

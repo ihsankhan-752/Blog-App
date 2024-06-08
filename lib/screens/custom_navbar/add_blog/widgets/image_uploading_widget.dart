@@ -45,7 +45,7 @@ class ImageUploadingWidget extends StatelessWidget {
     } else {
       return DottedBorder(
         strokeWidth: 2,
-        color: Theme.of(context).colorScheme.secondary,
+        color: AppColors.primaryColor,
         dashPattern: [8, 4],
         borderType: BorderType.RRect,
         radius: Radius.circular(12),

@@ -97,4 +97,13 @@ class BlogServices extends ChangeNotifier {
       print(e.message);
     }
   }
+
+  deleteBlog(BuildContext context, String blogId) async {
+    try {
+      await FirebaseFirestore.instance.collection('blogs').doc(blogId).delete();
+      Get.back();
+    } catch (e) {
+      showCustomMsg(context, e.toString());
+    }
+  }
 }

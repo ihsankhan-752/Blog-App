@@ -49,7 +49,7 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
               margin: EdgeInsets.symmetric(horizontal: 10.h, vertical: 10),
               padding: EdgeInsets.symmetric(horizontal: 10.h),
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primaryLightGrey, width: 1),
+                border: Border.all(color: AppColors.primaryColor, width: 1),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: DropdownButton<String>(
