@@ -9,6 +9,7 @@ import 'package:blog_app/widgets/custom_msg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -104,6 +105,42 @@ class BlogServices extends ChangeNotifier {
       Get.back();
     } catch (e) {
       showCustomMsg(context, e.toString());
+    }
+  }
+
+  updateBlog({
+    required BuildContext context,
+    required String blogId,
+    File? blogImage,
+    String? category,
+    String? title,
+    String? description,
+  }) async {
+    try {
+      Provider.of<LoadingController>(context, listen: false).setLoading(true);
+
+      String? imageUrl;
+      if (blogImage != null) {
+        File? _compressImage = await compressImage(blogImage);
+        imageUrl = await StorageServices().uploadPhoto(_compressImage);
+      }
+
+      Map<String, dynamic> data = {
+        'category': category,
+        'description': description,
+        'title': title,
+      };
+      if (imageUrl != null) {
+        data['blogImage'] = imageUrl;
+      }
+
+      await FirebaseFirestore.instance.collection('blogs').doc(blogId).update(data);
+      Provider.of<LoadingController>(context, listen: false).setLoading(false);
+      showCustomMsg(context, "Changes Saved");
+      Get.back();
+    } on FirebaseException catch (e) {
+      Provider.of<LoadingController>(context, listen: false).setLoading(false);
+      showCustomMsg(context, e.message!);
     }
   }
 }
