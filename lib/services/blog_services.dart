@@ -108,7 +108,7 @@ class BlogServices extends ChangeNotifier {
     }
   }
 
-  updateBlog({
+  Future<void> updateBlog({
     required BuildContext context,
     required String blogId,
     File? blogImage,
